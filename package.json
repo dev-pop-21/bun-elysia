@@ -1,18 +1,53 @@
 {
     "name": "bun-elysia",
+    "version": "1.0.0",
+    "description": "A modern REST API built with Bun and Elysia framework",
+    "main": "index.ts",
     "module": "index.ts",
     "type": "module",
     "private": true,
     "scripts": {
-        "format": "prettier . --write",
         "dev": "bun run --watch index.ts",
-        "prod": "bun run index.ts"
+        "start": "bun run index.ts",
+        "build": "bun run scripts/build.ts",
+        "deploy": "bun run scripts/deploy.ts",
+        "test": "bun test",
+        "test:watch": "bun test --watch",
+        "test:coverage": "bun test --coverage",
+        "format": "prettier . --write",
+        "format:check": "prettier . --check",
+        "lint": "echo 'Add ESLint configuration'",
+        "type-check": "tsc --noEmit",
+        "clean": "rm -rf dist node_modules/.cache"
+    },
+    "keywords": [
+        "bun",
+        "elysia",
+        "typescript",
+        "rest-api",
+        "jwt",
+        "authentication"
+    ],
+    "author": "Your Name",
+    "license": "MIT",
+    "dependencies": {
+        "@elysiajs/cors": "latest",
+        "@elysiajs/swagger": "latest",
+        "elysia": "latest",
+        "jsonwebtoken": "^9.0.2",
+        "mongoose": "^8.17.2"
     },
     "devDependencies": {
         "@types/bun": "latest",
+        "@types/jsonwebtoken": "^9.0.5",
+        "@types/mongoose": "^5.11.97",
         "prettier": "^3.6.2"
     },
     "peerDependencies": {
         "typescript": "^5"
+    },
+    "engines": {
+        "bun": ">=1.0.0",
+        "node": ">=18.0.0"
     }
 }
