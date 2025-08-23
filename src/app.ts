@@ -1,14 +1,18 @@
 import { Elysia } from 'elysia';
-import { corsPlugin, swaggerPlugin, loggerPlugin, logger } from './plugins';
+import { corsPlugin, swaggerPlugin, loggerPlugin, logger, generalRateLimit } from './plugins';
 import { apiRoutes } from './routes';
 import { appConfig } from './config';
 import { DatabaseService } from './services';
+import { RATE_LIMIT_CONFIG } from './utils/constants';
 
 export const app = new Elysia()
     // Global middlewares
     .use(swaggerPlugin)
     .use(corsPlugin)
     .use(loggerPlugin)
+    
+    // Rate limiting (conditionally applied)
+    .use(RATE_LIMIT_CONFIG.ENABLED ? generalRateLimit : new Elysia())
 
     // Health check endpoints
     .get('/', () => ({

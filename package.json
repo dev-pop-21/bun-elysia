@@ -26,6 +26,7 @@
         "@elysiajs/cors": "latest",
         "@elysiajs/swagger": "latest",
         "elysia": "latest",
+        "elysia-rate-limit": "^4.4.0",
         "jsonwebtoken": "^9.0.2",
         "mongoose": "^8.17.2",
         "winston": "^3.17.0",

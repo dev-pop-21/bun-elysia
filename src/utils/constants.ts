@@ -48,6 +48,31 @@ export const SYSLOG_CONFIG = {
     ENABLED: process.env.SYSLOG_ENABLED === 'true' || false,
 } as const;
 
+export const RATE_LIMIT_CONFIG = {
+    // General rate limit (applied to all endpoints)
+    GENERAL_DURATION: Number(process.env.RATE_LIMIT_GENERAL_DURATION) || 60000, // 1 minute
+    GENERAL_MAX_PROD: Number(process.env.RATE_LIMIT_GENERAL_MAX_PROD) || 100,
+    GENERAL_MAX_DEV: Number(process.env.RATE_LIMIT_GENERAL_MAX_DEV) || 1000,
+
+    // API rate limit (applied to /api/v1/* endpoints)
+    API_DURATION: Number(process.env.RATE_LIMIT_API_DURATION) || 60000, // 1 minute
+    API_MAX_PROD: Number(process.env.RATE_LIMIT_API_MAX_PROD) || 200,
+    API_MAX_DEV: Number(process.env.RATE_LIMIT_API_MAX_DEV) || 500,
+
+    // Auth rate limit (applied to /api/v1/auth/* endpoints)
+    AUTH_DURATION: Number(process.env.RATE_LIMIT_AUTH_DURATION) || 60000, // 1 minute
+    AUTH_MAX_PROD: Number(process.env.RATE_LIMIT_AUTH_MAX_PROD) || 5,
+    AUTH_MAX_DEV: Number(process.env.RATE_LIMIT_AUTH_MAX_DEV) || 20,
+
+    // Sensitive operations rate limit
+    SENSITIVE_DURATION: Number(process.env.RATE_LIMIT_SENSITIVE_DURATION) || 300000, // 5 minutes
+    SENSITIVE_MAX_PROD: Number(process.env.RATE_LIMIT_SENSITIVE_MAX_PROD) || 3,
+    SENSITIVE_MAX_DEV: Number(process.env.RATE_LIMIT_SENSITIVE_MAX_DEV) || 10,
+
+    // Global settings
+    ENABLED: process.env.RATE_LIMIT_ENABLED !== 'false', // Enabled by default
+} as const;
+
 export const HTTP_STATUS = {
     OK: 200,
     CREATED: 201,
