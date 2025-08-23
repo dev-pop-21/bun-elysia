@@ -7,18 +7,10 @@
     "type": "module",
     "private": true,
     "scripts": {
-        "dev": "bun run --watch index.ts",
-        "start": "bun run index.ts",
-        "build": "bun run scripts/build.ts",
-        "deploy": "bun run scripts/deploy.ts",
-        "test": "bun test",
-        "test:watch": "bun test --watch",
-        "test:coverage": "bun test --coverage",
         "format": "prettier . --write",
         "format:check": "prettier . --check",
-        "lint": "echo 'Add ESLint configuration'",
-        "type-check": "tsc --noEmit",
-        "clean": "rm -rf dist node_modules/.cache"
+        "dev": "bun run --watch index.ts",
+        "start": "bun run index.ts"
     },
     "keywords": [
         "bun",
