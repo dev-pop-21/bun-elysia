@@ -1,7 +1,9 @@
 import { Elysia } from 'elysia';
 import winston, { format } from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
-import { logConfig } from '../config';
+// @ts-ignore
+import { Syslog } from 'winston-syslog';
+import { logConfig, syslogConfig } from '../config';
 
 // Custom log format
 const logFormat = format.combine(
@@ -13,6 +15,57 @@ const logFormat = format.combine(
     })
 );
 
+// Syslog format
+const syslogFormat = format.combine(
+    format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
+    format.errors({ stack: true }),
+    format.json()
+);
+
+// Create transport array
+const transports: winston.transport[] = [
+    // Daily rotate file for combined logs
+    new DailyRotateFile({
+        filename: 'logs/combined-%DATE%.log',
+        format: format.combine(format.timestamp(), format.json()),
+        maxFiles: logConfig.maxFiles,
+        maxSize: logConfig.maxSize,
+        datePattern: logConfig.datePattern,
+        zippedArchive: logConfig.zippedArchive,
+        auditFile: logConfig.auditFile.replace('.json', '-combined.json'),
+    }),
+    // Daily rotate file for error logs
+    new DailyRotateFile({
+        filename: 'logs/error-%DATE%.log',
+        level: 'error',
+        format: format.combine(format.timestamp(), format.json()),
+        maxFiles: logConfig.maxFiles,
+        maxSize: logConfig.maxSize,
+        datePattern: logConfig.datePattern,
+        zippedArchive: logConfig.zippedArchive,
+        auditFile: logConfig.auditFile.replace('.json', '-error.json'),
+    }),
+];
+
+// Add syslog transport if enabled
+if (syslogConfig.enabled) {
+    try {
+        transports.push(
+            new Syslog({
+                host: syslogConfig.host,
+                port: syslogConfig.port,
+                protocol: syslogConfig.protocol,
+                facility: syslogConfig.facility,
+                app_name: syslogConfig.appName,
+                format: syslogFormat,
+            })
+        );
+        console.log(`Syslog transport enabled - ${syslogConfig.host}:${syslogConfig.port} (${syslogConfig.protocol})`);
+    } catch (error) {
+        console.error('Failed to initialize syslog transport:', error);
+    }
+}
+
 // Create Winston logger instance
 const logger = winston.createLogger({
     level: process.env.LOG_LEVEL || 'info',
@@ -22,29 +75,7 @@ const logger = winston.createLogger({
         format.json()
     ),
     defaultMeta: { service: 'bun-elysia' },
-    transports: [
-        // Daily rotate file for combined logs
-        new DailyRotateFile({
-            filename: 'logs/combined-%DATE%.log',
-            format: format.combine(format.timestamp(), format.json()),
-            maxFiles: logConfig.maxFiles,
-            maxSize: logConfig.maxSize,
-            datePattern: logConfig.datePattern,
-            zippedArchive: logConfig.zippedArchive,
-            auditFile: logConfig.auditFile.replace('.json', '-combined.json'),
-        }),
-        // Daily rotate file for error logs
-        new DailyRotateFile({
-            filename: 'logs/error-%DATE%.log',
-            level: 'error',
-            format: format.combine(format.timestamp(), format.json()),
-            maxFiles: logConfig.maxFiles,
-            maxSize: logConfig.maxSize,
-            datePattern: logConfig.datePattern,
-            zippedArchive: logConfig.zippedArchive,
-            auditFile: logConfig.auditFile.replace('.json', '-error.json'),
-        }),
-    ],
+    transports,
 });
 
 // If we're not in production then log to the console with the format:

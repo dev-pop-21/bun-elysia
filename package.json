@@ -29,7 +29,8 @@
         "jsonwebtoken": "^9.0.2",
         "mongoose": "^8.17.2",
         "winston": "^3.17.0",
-        "winston-daily-rotate-file": "^5.0.0"
+        "winston-daily-rotate-file": "^5.0.0",
+        "winston-syslog": "^2.7.1"
     },
     "devDependencies": {
         "@types/bun": "latest",

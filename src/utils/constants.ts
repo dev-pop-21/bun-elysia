@@ -39,6 +39,15 @@ export const LOG_CONFIG = {
     LOG_LEVEL: process.env.LOG_LEVEL || 'info',
 } as const;
 
+export const SYSLOG_CONFIG = {
+    HOST: process.env.SYSLOG_HOST || 'localhost',
+    PORT: Number(process.env.SYSLOG_PORT) || 514,
+    PROTOCOL: process.env.SYSLOG_PROTOCOL as 'udp4' | 'udp6' | 'tcp4' | 'tcp6' || 'udp4',
+    FACILITY: process.env.SYSLOG_FACILITY || 'local0',
+    APP_NAME: process.env.SYSLOG_APP_NAME || 'bun-elysia',
+    ENABLED: process.env.SYSLOG_ENABLED === 'true' || false,
+} as const;
+
 export const HTTP_STATUS = {
     OK: 200,
     CREATED: 201,

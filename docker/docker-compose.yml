@@ -1,0 +1,45 @@
+services:
+    mongo:
+        image: mongo
+        pull_policy: always
+        restart: always
+        environment:
+            - TZ=Asia/Bangkok
+            - MONGO_INITDB_ROOT_USERNAME=admin
+            - MONGO_INITDB_ROOT_PASSWORD=P@ssW0rd
+        volumes:
+            - ./volumes/mongo:/data/db
+            - ./volumes/mongo/configdb:/data/configdb
+        ports:
+            - 27017:27017
+
+    syslog-ng:
+        image: lscr.io/linuxserver/syslog-ng:latest
+        restart: unless-stopped
+        environment:
+            - TZ=Asia/Bangkok
+            - PUID=1000
+            - PGID=1000
+            - TZ=Etc/UTC
+            - LOG_TO_STDOUT= #optional
+        volumes:
+            - ./volumes/syslog-ng/syslog-ng/config:/config
+            - ./volumes/syslog-ng/log:/var/log #optional
+        ports:
+            - 514:5514/udp
+            - 601:6601/tcp
+            - 6514:6514/tcp
+
+    # syslog-ng:
+    #     image: balabit/syslog-ng:latest
+    #     container_name: syslog-ng
+    #     restart: unless-stopped
+    #     environment:
+    #         - TZ=Asia/Bangkok
+    #     volumes:
+    #         - ./volumes/syslog-ng/syslog-ng.conf:/etc/syslog-ng/syslog-ng.conf:ro
+    #         - ./volumes/syslog-ng/logs:/var/log/syslog-ng
+    #     ports:
+    #         - "514:514/udp"    # Syslog UDP
+    #         - "601:601/tcp"    # Syslog TCP
+    #         - "6514:6514/tcp"  # Syslog TLS
