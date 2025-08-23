@@ -13,8 +13,9 @@ export const JWT_CONFIG = {
 
 export const DATABASE_CONFIG = {
     URL: process.env.MONGODB_URI || 'mongodb://localhost:27017/bun_elysia',
-    MAX_CONNECTIONS: Number(process.env.DB_MAX_CONNECTIONS) || 10,
-    CONNECTION_TIMEOUT: Number(process.env.DB_CONNECTION_TIMEOUT) || 5000,
+    DATABASE_NAME: process.env.DATABASE_NAME || "mydb",
+    MAX_POOL_SIZE: Number(process.env.DB_MAX_POOL_SIZE) || 10,
+    SERVER_SELECTION_TIMEOUT_MS: Number(process.env.DB_SERVER_SELECTION_TIMEOUT_MS) || 5000,
 } as const;
 
 export const CORS_CONFIG = {

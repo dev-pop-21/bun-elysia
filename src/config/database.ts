@@ -2,14 +2,15 @@ import { DATABASE_CONFIG } from '../utils/constants';
 
 export const databaseConfig = {
     url: DATABASE_CONFIG.URL,
-    maxConnections: DATABASE_CONFIG.MAX_CONNECTIONS,
-    connectionTimeout: DATABASE_CONFIG.CONNECTION_TIMEOUT,
+    maxConnections: DATABASE_CONFIG.MAX_POOL_SIZE,
+    connectionTimeout: DATABASE_CONFIG.SERVER_SELECTION_TIMEOUT_MS,
 
     // MongoDB/Mongoose options
     options: {
         // Connection options
-        maxPoolSize: DATABASE_CONFIG.MAX_CONNECTIONS, // Maximum number of connections
-        serverSelectionTimeoutMS: DATABASE_CONFIG.CONNECTION_TIMEOUT, // How long to try selecting a server
+        dbName: DATABASE_CONFIG.DATABASE_NAME, // Database name
+        maxPoolSize: DATABASE_CONFIG.MAX_POOL_SIZE, // Maximum number of connections
+        serverSelectionTimeoutMS: DATABASE_CONFIG.SERVER_SELECTION_TIMEOUT_MS, // How long to try selecting a server
         socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
 
         // Authentication (if needed)
