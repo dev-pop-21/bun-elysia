@@ -1,13 +1,11 @@
 import { Elysia } from 'elysia';
 import { corsPlugin, swaggerPlugin } from './plugins';
-import { loggerMiddleware } from './middlewares';
 import { apiRoutes } from './routes';
 import { appConfig } from './config';
 import { DatabaseService } from './services';
 
 export const app = new Elysia()
     // Global middlewares
-    .use(loggerMiddleware)
     .use(corsPlugin)
     .use(swaggerPlugin)
 
