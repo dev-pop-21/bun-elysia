@@ -26,9 +26,7 @@ const userSchema = new Schema<UserDocument>(
             trim: true,
             validate: {
                 validator: function (v: string) {
-                    return /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(
-                        v
-                    );
+                    return /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v);
                 },
                 message: 'Please enter a valid email address',
             },
@@ -78,9 +76,7 @@ userSchema.virtual('id').get(function () {
 });
 
 // Instance method to compare password
-userSchema.methods.comparePassword = async function (
-    candidatePassword: string
-): Promise<boolean> {
+userSchema.methods.comparePassword = async function (candidatePassword: string): Promise<boolean> {
     try {
         return await Bun.password.verify(candidatePassword, this.password);
     } catch (error) {

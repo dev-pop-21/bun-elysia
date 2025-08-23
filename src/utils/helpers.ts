@@ -3,14 +3,11 @@ export const generateId = (): string => {
 };
 
 export const generateUUID = (): string => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-        /[xy]/g,
-        function (c) {
-            const r = (Math.random() * 16) | 0;
-            const v = c === 'x' ? r : (r & 0x3) | 0x8;
-            return v.toString(16);
-        }
-    );
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        const r = (Math.random() * 16) | 0;
+        const v = c === 'x' ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+    });
 };
 
 export const sleep = (ms: number): Promise<void> => {
@@ -37,8 +34,7 @@ export const slugify = (text: string): string => {
 };
 
 export const randomString = (length: number): string => {
-    const chars =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
     for (let i = 0; i < length; i++) {
         result += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -46,10 +42,7 @@ export const randomString = (length: number): string => {
     return result;
 };
 
-export const pick = <T extends object, K extends keyof T>(
-    obj: T,
-    keys: K[]
-): Pick<T, K> => {
+export const pick = <T extends object, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> => {
     const result = {} as Pick<T, K>;
     keys.forEach(key => {
         if (key in obj) {
@@ -59,10 +52,7 @@ export const pick = <T extends object, K extends keyof T>(
     return result;
 };
 
-export const omit = <T extends object, K extends keyof T>(
-    obj: T,
-    keys: K[]
-): Omit<T, K> => {
+export const omit = <T extends object, K extends keyof T>(obj: T, keys: K[]): Omit<T, K> => {
     const result = { ...obj };
     keys.forEach(key => {
         delete result[key];

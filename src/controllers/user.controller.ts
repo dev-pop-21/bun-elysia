@@ -16,10 +16,7 @@ export const userController = new Elysia({ prefix: '/users' })
         } catch (error) {
             return {
                 success: false,
-                message:
-                    error instanceof Error
-                        ? error.message
-                        : 'Failed to retrieve users',
+                message: error instanceof Error ? error.message : 'Failed to retrieve users',
             };
         }
     })
@@ -45,10 +42,7 @@ export const userController = new Elysia({ prefix: '/users' })
                 set.status = 500;
                 return {
                     success: false,
-                    message:
-                        error instanceof Error
-                            ? error.message
-                            : 'Failed to retrieve user',
+                    message: error instanceof Error ? error.message : 'Failed to retrieve user',
                 };
             }
         },
@@ -63,10 +57,7 @@ export const userController = new Elysia({ prefix: '/users' })
         '/:id',
         async ({ params, body, set }) => {
             try {
-                const updatedUser = await UserService.updateUser(
-                    params.id,
-                    body
-                );
+                const updatedUser = await UserService.updateUser(params.id, body);
                 return {
                     success: true,
                     data: updatedUser,
@@ -76,10 +67,7 @@ export const userController = new Elysia({ prefix: '/users' })
                 set.status = 400;
                 return {
                     success: false,
-                    message:
-                        error instanceof Error
-                            ? error.message
-                            : 'Failed to update user',
+                    message: error instanceof Error ? error.message : 'Failed to update user',
                 };
             }
         },
@@ -107,10 +95,7 @@ export const userController = new Elysia({ prefix: '/users' })
                 set.status = 400;
                 return {
                     success: false,
-                    message:
-                        error instanceof Error
-                            ? error.message
-                            : 'Failed to delete user',
+                    message: error instanceof Error ? error.message : 'Failed to delete user',
                 };
             }
         },

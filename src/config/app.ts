@@ -1,4 +1,5 @@
 import { APP_CONFIG } from '../utils/constants';
+import { name, version } from '../../package.json';
 
 export const appConfig = {
     port: APP_CONFIG.PORT,
@@ -7,9 +8,9 @@ export const appConfig = {
     apiPrefix: APP_CONFIG.API_PREFIX,
 
     // App-specific configurations
-    appName: 'Bun Elysia API',
-    appVersion: '1.0.0',
-    appDescription: 'A modern REST API built with Bun and Elysia',
+    appName: name,
+    appVersion: version,
+    appDescription: 'Professional API for SDP AI Generator services',
 
     // Feature flags
     features: {

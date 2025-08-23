@@ -1,9 +1,10 @@
 import { Elysia } from 'elysia';
 import { swagger } from '@elysiajs/swagger';
+import type { ElysiaSwaggerConfig } from '@elysiajs/swagger';
 import { appConfig } from '../config/app';
 
-export const swaggerPlugin = new Elysia().use(
-    swagger({
+export const swaggerPlugin = (app: Elysia) => {
+    const options: ElysiaSwaggerConfig = {
         documentation: {
             info: {
                 title: appConfig.appName,
@@ -11,48 +12,50 @@ export const swaggerPlugin = new Elysia().use(
                 description: appConfig.appDescription,
                 contact: {
                     name: 'API Support',
-                    email: 'support@example.com',
+                    email: 'likit.p@softnix.co.th',
                 },
                 license: {
                     name: 'MIT',
                     url: 'https://opensource.org/licenses/MIT',
                 },
             },
-            servers: [
-                {
-                    url: `http://localhost:${appConfig.port}`,
-                    description: 'Development server',
-                },
-            ],
-            tags: [
-                {
-                    name: 'Authentication',
-                    description: 'Authentication endpoints',
-                },
-                {
-                    name: 'Users',
-                    description: 'User management endpoints',
-                },
-            ],
+            tags: [],
+            servers: [],
+            security: [{ Bearer: [] }],
             components: {
                 securitySchemes: {
-                    bearerAuth: {
+                    Bearer: {
                         type: 'http',
                         scheme: 'bearer',
                         bearerFormat: 'JWT',
+                        description: 'JWT Bearer token for API authentication',
                     },
                 },
             },
-            security: [
-                {
-                    bearerAuth: [],
-                },
-            ],
         },
-        exclude: ['/'],
-        path: '/docs',
         swaggerOptions: {
             persistAuthorization: true,
+            displayRequestDuration: true,
+            tryItOutEnabled: true,
+            filter: true,
+            deepLinking: true,
         },
-    })
-);
+    };
+    return app
+        .use(
+            swagger({
+                ...options,
+                path: '/swagger',
+                exclude: [/swagger.*/],
+                provider: 'swagger-ui',
+            })
+        )
+        .use(
+            swagger({
+                ...options,
+                path: '/docs',
+                exclude: [/docs.*/],
+                provider: 'scalar',
+            })
+        );
+};

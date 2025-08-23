@@ -27,18 +27,14 @@ export class DatabaseService {
             mongoose.set('strictQuery', false);
 
             // Connect to MongoDB
-            await mongoose.connect(
-                databaseConfig.url,
-                databaseConfig.options as any
-            );
+            await mongoose.connect(databaseConfig.url, databaseConfig.options as any);
 
             this.isConnected = true;
             console.log('✅ MongoDB connected successfully');
 
             // Handle connection events
             mongoose.connection.on('error', error => {
-                const message =
-                    error instanceof Error ? error.message : 'Unknown error';
+                const message = error instanceof Error ? error.message : 'Unknown error';
                 console.error('❌ MongoDB connection error:', message);
                 this.isConnected = false;
             });
@@ -53,8 +49,7 @@ export class DatabaseService {
                 this.isConnected = true;
             });
         } catch (error) {
-            const message =
-                error instanceof Error ? error.message : 'Unknown error';
+            const message = error instanceof Error ? error.message : 'Unknown error';
             console.error('❌ MongoDB connection failed:', message);
             this.isConnected = false;
             throw error;
@@ -73,8 +68,7 @@ export class DatabaseService {
             this.isConnected = false;
             console.log('✅ MongoDB disconnected successfully');
         } catch (error) {
-            const message =
-                error instanceof Error ? error.message : 'Unknown error';
+            const message = error instanceof Error ? error.message : 'Unknown error';
             console.error('❌ MongoDB disconnection failed:', message);
             throw error;
         }

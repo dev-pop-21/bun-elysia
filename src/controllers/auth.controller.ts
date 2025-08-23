@@ -17,8 +17,7 @@ export const authController = new Elysia({ prefix: '/auth' })
                 set.status = 401;
                 return {
                     success: false,
-                    message:
-                        error instanceof Error ? error.message : 'Login failed',
+                    message: error instanceof Error ? error.message : 'Login failed',
                 };
             }
         },
@@ -34,9 +33,7 @@ export const authController = new Elysia({ prefix: '/auth' })
         '/register',
         async ({ body, set }) => {
             try {
-                const result = await AuthService.register(
-                    body as RegisterRequest
-                );
+                const result = await AuthService.register(body as RegisterRequest);
                 set.status = 201;
                 return {
                     success: true,
@@ -47,10 +44,7 @@ export const authController = new Elysia({ prefix: '/auth' })
                 set.status = 400;
                 return {
                     success: false,
-                    message:
-                        error instanceof Error
-                            ? error.message
-                            : 'Registration failed',
+                    message: error instanceof Error ? error.message : 'Registration failed',
                 };
             }
         },

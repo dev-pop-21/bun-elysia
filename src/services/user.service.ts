@@ -10,13 +10,7 @@ import mongoose from 'mongoose';
 
 export class UserService {
     static async getUsers(query: UserQuery = {}): Promise<PaginatedUsers> {
-        const {
-            page = 1,
-            limit = 10,
-            search = '',
-            sortBy = 'name',
-            sortOrder = 'asc',
-        } = query;
+        const { page = 1, limit = 10, search = '', sortBy = 'name', sortOrder = 'asc' } = query;
 
         // Build search filter
         const filter: any = {};
@@ -37,11 +31,7 @@ export class UserService {
         try {
             // Execute queries in parallel
             const [users, total] = await Promise.all([
-                UserModel.find(filter)
-                    .sort(sort)
-                    .skip(skip)
-                    .limit(limit)
-                    .lean(),
+                UserModel.find(filter).sort(sort).skip(skip).limit(limit).lean(),
                 UserModel.countDocuments(filter),
             ]);
 
@@ -132,10 +122,7 @@ export class UserService {
         }
     }
 
-    static async updateUser(
-        id: string,
-        updateData: UserUpdateInput
-    ): Promise<User> {
+    static async updateUser(id: string, updateData: UserUpdateInput): Promise<User> {
         try {
             // Validate ObjectId
             if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -153,15 +140,11 @@ export class UserService {
                 }
             }
 
-            const updatedUser = await UserModel.findByIdAndUpdate(
-                id,
-                updateData,
-                {
-                    new: true,
-                    runValidators: true,
-                    lean: true,
-                }
-            );
+            const updatedUser = await UserModel.findByIdAndUpdate(id, updateData, {
+                new: true,
+                runValidators: true,
+                lean: true,
+            });
 
             if (!updatedUser) {
                 throw new Error('User not found');

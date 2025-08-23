@@ -1,16 +1,11 @@
-import type {
-    LoginRequest,
-    RegisterRequest,
-    AuthResponse,
-} from '../types/auth.types';
+import type { LoginRequest, RegisterRequest, AuthResponse } from '../types/auth.types';
 import type { User } from '../types/user.types';
 import { UserService } from './user.service';
 import { UserModel, type UserDocument } from '../models/user.mongoose';
 import { sign, verify } from 'jsonwebtoken';
 
 export class AuthService {
-    private static readonly JWT_SECRET =
-        process.env.JWT_SECRET || 'your-secret-key';
+    private static readonly JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
     private static readonly JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
 
     static async login(loginData: LoginRequest): Promise<AuthResponse> {
@@ -51,9 +46,7 @@ export class AuthService {
         }
     }
 
-    static async register(
-        registerData: RegisterRequest
-    ): Promise<AuthResponse> {
+    static async register(registerData: RegisterRequest): Promise<AuthResponse> {
         const { email, password, name } = registerData;
 
         try {

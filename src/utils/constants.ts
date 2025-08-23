@@ -24,15 +24,19 @@ export const CORS_CONFIG = {
     MAX_AGE: 86400,
 } as const;
 
-export const RATE_LIMIT_CONFIG = {
-    MAX_REQUESTS: Number(process.env.RATE_LIMIT_MAX) || 100,
-    WINDOW_MS: Number(process.env.RATE_LIMIT_WINDOW) || 15 * 60 * 1000, // 15 minutes
-} as const;
-
 export const PAGINATION_CONFIG = {
     DEFAULT_PAGE: 1,
     DEFAULT_LIMIT: 10,
     MAX_LIMIT: 100,
+} as const;
+
+export const LOG_CONFIG = {
+    MAX_FILES: process.env.LOG_MAX_FILES || '14d',
+    MAX_SIZE: process.env.LOG_MAX_SIZE || '20m',
+    DATE_PATTERN: process.env.LOG_DATE_PATTERN || 'YYYY-MM-DD',
+    ZIPPED_ARCHIVE: process.env.LOG_ZIPPED_ARCHIVE === 'true' || true,
+    AUDIT_FILE: process.env.LOG_AUDIT_FILE || 'logs/audit.json',
+    LOG_LEVEL: process.env.LOG_LEVEL || 'info',
 } as const;
 
 export const HTTP_STATUS = {

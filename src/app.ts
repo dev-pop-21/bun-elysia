@@ -1,13 +1,14 @@
 import { Elysia } from 'elysia';
-import { corsPlugin, swaggerPlugin } from './plugins';
+import { corsPlugin, swaggerPlugin, loggerPlugin, logger } from './plugins';
 import { apiRoutes } from './routes';
 import { appConfig } from './config';
 import { DatabaseService } from './services';
 
 export const app = new Elysia()
     // Global middlewares
-    .use(corsPlugin)
     .use(swaggerPlugin)
+    .use(corsPlugin)
+    .use(loggerPlugin)
 
     // Health check endpoints
     .get('/', () => ({
@@ -47,9 +48,11 @@ export const app = new Elysia()
 
     // Global error handler
     .onError(({ error, set }) => {
-        const message =
-            error instanceof Error ? error.message : 'Internal server error';
-        console.error('Global error:', message);
+        const message = error instanceof Error ? error.message : 'Internal server error';
+        logger.error('Global error', {
+            message,
+            stack: error instanceof Error ? error.stack : undefined,
+        });
 
         set.status = 500;
         return {
