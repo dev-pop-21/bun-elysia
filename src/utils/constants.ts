@@ -42,7 +42,7 @@ export const LOG_CONFIG = {
 export const SYSLOG_CONFIG = {
     HOST: process.env.SYSLOG_HOST || 'localhost',
     PORT: Number(process.env.SYSLOG_PORT) || 514,
-    PROTOCOL: process.env.SYSLOG_PROTOCOL as 'udp4' | 'udp6' | 'tcp4' | 'tcp6' || 'udp4',
+    PROTOCOL: (process.env.SYSLOG_PROTOCOL as 'udp4' | 'udp6' | 'tcp4' | 'tcp6') || 'udp4',
     FACILITY: process.env.SYSLOG_FACILITY || 'local0',
     APP_NAME: process.env.SYSLOG_APP_NAME || 'bun-elysia',
     ENABLED: process.env.SYSLOG_ENABLED === 'true' || false,

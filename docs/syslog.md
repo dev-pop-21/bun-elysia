@@ -124,25 +124,28 @@ Logs sent to syslog-ng will have the following format:
 To test syslog integration:
 
 1. Enable syslog in your `.env` file:
-   ```bash
-   SYSLOG_ENABLED=true
-   ```
+
+    ```bash
+    SYSLOG_ENABLED=true
+    ```
 
 2. Start your application:
-   ```bash
-   bun run dev
-   ```
+
+    ```bash
+    bun run dev
+    ```
 
 3. Make some API requests to generate logs
 
 4. Check syslog messages:
-   ```bash
-   # On macOS
-   tail -f /var/log/bun-elysia/application.log
 
-   # On Linux
-   tail -f /var/log/syslog | grep bun-elysia
-   ```
+    ```bash
+    # On macOS
+    tail -f /var/log/bun-elysia/application.log
+
+    # On Linux
+    tail -f /var/log/syslog | grep bun-elysia
+    ```
 
 ## Troubleshooting
 

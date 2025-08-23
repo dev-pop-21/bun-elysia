@@ -60,7 +60,9 @@ if (syslogConfig.enabled) {
                 format: syslogFormat,
             })
         );
-        console.log(`Syslog transport enabled - ${syslogConfig.host}:${syslogConfig.port} (${syslogConfig.protocol})`);
+        console.log(
+            `Syslog transport enabled - ${syslogConfig.host}:${syslogConfig.port} (${syslogConfig.protocol})`
+        );
     } catch (error) {
         console.error('Failed to initialize syslog transport:', error);
     }
@@ -135,7 +137,7 @@ export const loggerPlugin = (app: Elysia) =>
             const { error, request, info } = handler;
             const duration = `${Date.now() - (request?.startTime || Date.now())}ms`;
             const message = (error instanceof Error && error?.message) || String(error);
-            const stack = error instanceof Error && error.stack || '';
+            const stack = (error instanceof Error && error.stack) || '';
             const timestamp = new Date().toISOString();
             handler.info = {
                 ...info,
