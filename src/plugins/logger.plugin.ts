@@ -10,7 +10,7 @@ const logFormat = format.combine(
     format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
     format.colorize({ all: true }),
     format.printf(info => {
-        const { timestamp = '-', ip = '-', level = '-', message = '-', duration = '-' } = info;
+        const { timestamp = '', ip = '', level = '', message = '', duration = '' } = info;
         return `timestamp:[${timestamp}]-ip:[${ip}]-level[${level}]-message:[${message}] ${duration}`;
     })
 );
@@ -105,17 +105,18 @@ export const loggerPlugin = (app: Elysia) =>
             const xRealIP = request.headers.get('X-Real-IP');
             const serverIP = server?.requestIP?.(request)?.address;
             const ip = cfConnectingIP || xForwardedForIndex || xRealIP || serverIP || '';
-            const timestamp = new Date().toISOString();
             const request_id = crypto.randomUUID();
+            const logLevel = 'info';
+            const timestamp = new Date().toISOString();
             handler.info = {
+                request_id,
                 ip,
                 method,
                 url,
                 user,
                 timestamp,
-                request_id,
             };
-            logger.info('Incoming request', handler.info);
+            logger[logLevel]('Incoming request', handler.info);
             // Store start time for response logging
             handler.request.startTime = Date.now();
         })
@@ -138,6 +139,7 @@ export const loggerPlugin = (app: Elysia) =>
             const duration = `${Date.now() - (request?.startTime || Date.now())}ms`;
             const message = (error instanceof Error && error?.message) || String(error);
             const stack = (error instanceof Error && error.stack) || '';
+            const logLevel = 'error';
             const timestamp = new Date().toISOString();
             handler.info = {
                 ...info,
@@ -146,7 +148,7 @@ export const loggerPlugin = (app: Elysia) =>
                 timestamp,
                 duration,
             };
-            logger.error('Request error', handler.info);
+            logger[logLevel]('Request error', handler.info);
         });
 
 // Export the winston logger instance for use in other parts of the application

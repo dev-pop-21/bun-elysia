@@ -1,7 +1,17 @@
-import { rateLimit } from 'elysia-rate-limit';
+import { rateLimit, type Generator } from 'elysia-rate-limit';
 import { appConfig } from '../config';
 import { RATE_LIMIT_CONFIG } from '../utils/constants';
 import { logger } from './logger.plugin';
+
+// Function to generate unique identifier for each request (using various headers)
+const createGenerator: Generator = (request, server) => {
+    const cfConnectingIP = request.headers.get('CF-Connecting-IP');
+    const xForwardedFor = request.headers.get('X-Forwarded-For');
+    const xForwardedForIndex = xForwardedFor?.split(',')[0]?.trim();
+    const xRealIP = request.headers.get('X-Real-IP');
+    const serverIP = server?.requestIP?.(request)?.address;
+    return cfConnectingIP || xForwardedForIndex || xRealIP || serverIP || '';
+};
 
 // Helper function to create error response
 const createErrorResponse = (message: string) => {
@@ -31,6 +41,7 @@ export const generalRateLimit = rateLimit({
     max: appConfig.isDevelopment()
         ? RATE_LIMIT_CONFIG.GENERAL_MAX_DEV
         : RATE_LIMIT_CONFIG.GENERAL_MAX_PROD,
+    generator: createGenerator,
     errorResponse: createErrorResponse('Too many requests, please try again later'),
 });
 
@@ -40,6 +51,7 @@ export const authRateLimit = rateLimit({
     max: appConfig.isDevelopment()
         ? RATE_LIMIT_CONFIG.AUTH_MAX_DEV
         : RATE_LIMIT_CONFIG.AUTH_MAX_PROD,
+    generator: createGenerator,
     errorResponse: createErrorResponse('Too many authentication attempts, please try again later'),
 });
 
@@ -49,6 +61,7 @@ export const sensitiveRateLimit = rateLimit({
     max: appConfig.isDevelopment()
         ? RATE_LIMIT_CONFIG.SENSITIVE_MAX_DEV
         : RATE_LIMIT_CONFIG.SENSITIVE_MAX_PROD,
+    generator: createGenerator,
     errorResponse: createErrorResponse(
         'Too many sensitive operation attempts, please try again later'
     ),
@@ -58,5 +71,6 @@ export const sensitiveRateLimit = rateLimit({
 export const apiRateLimit = rateLimit({
     duration: RATE_LIMIT_CONFIG.API_DURATION,
     max: appConfig.isDevelopment() ? RATE_LIMIT_CONFIG.API_MAX_DEV : RATE_LIMIT_CONFIG.API_MAX_PROD,
+    generator: createGenerator,
     errorResponse: createErrorResponse('API rate limit exceeded, please try again later'),
 });
