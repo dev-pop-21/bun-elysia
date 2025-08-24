@@ -10,8 +10,8 @@ const logFormat = format.combine(
     format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
     format.colorize({ all: true }),
     format.printf(info => {
-        const { timestamp = '', level = '', message = '', duration = '' } = info;
-        return `${timestamp} ${level} : ${message} ${duration}`;
+        const { timestamp = '-', ip = '-', level = '-', message = '-', duration = '-' } = info;
+        return `timestamp:[${timestamp}]-ip:[${ip}]-level[${level}]-message:[${message}] ${duration}`;
     })
 );
 
