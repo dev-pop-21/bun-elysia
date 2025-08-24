@@ -2,7 +2,7 @@ import { Elysia, t } from 'elysia';
 import { AuthService } from '../services/auth.service';
 import type { LoginRequest, RegisterRequest } from '../types/auth.types';
 
-export const authController = new Elysia({ prefix: '/auth' })
+export const authController = new Elysia()
     .post(
         '/login',
         async ({ body, set }) => {

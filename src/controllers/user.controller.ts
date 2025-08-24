@@ -2,7 +2,7 @@ import { Elysia, t } from 'elysia';
 import { UserService } from '../services/user.service';
 import { authMiddleware } from '../middlewares/auth.middleware';
 
-export const userController = new Elysia({ prefix: '/users' })
+export const userController = new Elysia()
     .use(authMiddleware)
 
     .get('/', async ({ query }) => {
