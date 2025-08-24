@@ -10,7 +10,7 @@ export const app = new Elysia()
     .use(swaggerPlugin)
     .use(corsPlugin)
     .use(loggerPlugin)
-    
+
     // Rate limiting (conditionally applied)
     .use(RATE_LIMIT_CONFIG.ENABLED ? generalRateLimit : new Elysia())
 
