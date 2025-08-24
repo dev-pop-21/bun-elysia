@@ -41,29 +41,33 @@ export const app = new Elysia()
     .use(apiRoutes)
 
     // 404 handler
-    .all('*', ({ set }) => {
+    .all('*', (handler: any) => {
+        const { set, info } = handler;
+        logger.warn('404 Not Found', info);
         set.status = 404;
         return {
             success: false,
             message: 'Route not found',
-            statusCode: 404,
+            status: set.status,
         };
     })
 
     // Global error handler
-    .onError(({ error, set }) => {
+    .onError((handler: any) => {
+        const { error, set, info } = handler;
         const message = error instanceof Error ? error.message : 'Internal server error';
+        const stack = error instanceof Error ? error.stack : undefined;
         logger.error('Global error', {
             message,
-            stack: error instanceof Error ? error.stack : undefined,
+            stack,
+            ...info,
         });
-
         set.status = 500;
         return {
             success: false,
             message: 'Internal server error',
             error: appConfig.isDevelopment() ? message : undefined,
-            statusCode: 500,
+            status: set.status,
         };
     });
 

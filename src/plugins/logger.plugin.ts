@@ -32,7 +32,18 @@ const transports: winston.transport[] = [
         maxSize: logConfig.maxSize,
         datePattern: logConfig.datePattern,
         zippedArchive: logConfig.zippedArchive,
-        auditFile: logConfig.auditFile.replace('.json', '-combined.json'),
+        auditFile: logConfig.auditFile.replace('.json', '-combined-audit.json'),
+    }),
+    // Daily rotate file for warn logs
+    new DailyRotateFile({
+        filename: 'logs/warn-%DATE%.log',
+        level: 'warn',
+        format: format.combine(format.timestamp(), format.json()),
+        maxFiles: logConfig.maxFiles,
+        maxSize: logConfig.maxSize,
+        datePattern: logConfig.datePattern,
+        zippedArchive: logConfig.zippedArchive,
+        auditFile: logConfig.auditFile.replace('.json', '-warn-audit.json'),
     }),
     // Daily rotate file for error logs
     new DailyRotateFile({
@@ -43,7 +54,7 @@ const transports: winston.transport[] = [
         maxSize: logConfig.maxSize,
         datePattern: logConfig.datePattern,
         zippedArchive: logConfig.zippedArchive,
-        auditFile: logConfig.auditFile.replace('.json', '-error.json'),
+        auditFile: logConfig.auditFile.replace('.json', '-error-audit.json'),
     }),
 ];
 
@@ -106,7 +117,7 @@ export const loggerPlugin = (app: Elysia) =>
             const serverIP = server?.requestIP?.(request)?.address;
             const ip = cfConnectingIP || xForwardedForIndex || xRealIP || serverIP || '';
             const request_id = crypto.randomUUID();
-            const logLevel = 'info';
+            const level = 'info';
             const timestamp = new Date().toISOString();
             handler.info = {
                 request_id,
@@ -116,7 +127,7 @@ export const loggerPlugin = (app: Elysia) =>
                 user,
                 timestamp,
             };
-            logger[logLevel]('Incoming request', handler.info);
+            logger.info('Incoming request', handler.info);
             // Store start time for response logging
             handler.request.startTime = Date.now();
         })
@@ -124,7 +135,6 @@ export const loggerPlugin = (app: Elysia) =>
             const { request, response, info } = handler;
             const duration = `${Date.now() - (request?.startTime || Date.now())}ms`;
             const status = response?.status || 200;
-            const logLevel = status >= 400 ? 'error' : 'info';
             const timestamp = new Date().toISOString();
             handler.info = {
                 ...info,
@@ -132,14 +142,14 @@ export const loggerPlugin = (app: Elysia) =>
                 timestamp,
                 duration,
             };
-            logger[logLevel]('Request completed', handler.info);
+            const level = status >= 400 ? 'error' : 'info';
+            logger[level]('Request completed', handler.info);
         })
         .onError((handler: any) => {
             const { error, request, info } = handler;
             const duration = `${Date.now() - (request?.startTime || Date.now())}ms`;
             const message = (error instanceof Error && error?.message) || String(error);
             const stack = (error instanceof Error && error.stack) || '';
-            const logLevel = 'error';
             const timestamp = new Date().toISOString();
             handler.info = {
                 ...info,
@@ -148,7 +158,7 @@ export const loggerPlugin = (app: Elysia) =>
                 timestamp,
                 duration,
             };
-            logger[logLevel]('Request error', handler.info);
+            logger.error('Request error', handler.info);
         });
 
 // Export the winston logger instance for use in other parts of the application
