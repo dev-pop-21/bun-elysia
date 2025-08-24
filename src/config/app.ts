@@ -1,5 +1,5 @@
 import { APP_CONFIG } from '../utils/constants';
-import { name, version } from '../../package.json';
+import { name, description, version } from '../../package.json';
 
 export const appConfig = {
     port: APP_CONFIG.PORT,
@@ -10,7 +10,7 @@ export const appConfig = {
     // App-specific configurations
     appName: name,
     appVersion: version,
-    appDescription: 'Professional API for SDP AI Generator services',
+    appDescription: description,
 
     // Feature flags
     features: {
