@@ -117,7 +117,6 @@ export const loggerPlugin = (app: Elysia) =>
             const serverIP = server?.requestIP?.(request)?.address;
             const ip = cfConnectingIP || xForwardedForIndex || xRealIP || serverIP || '';
             const request_id = crypto.randomUUID();
-            const level = 'info';
             const timestamp = new Date().toISOString();
             handler.info = {
                 request_id,

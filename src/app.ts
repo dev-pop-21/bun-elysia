@@ -43,8 +43,12 @@ export const app = new Elysia()
     // 404 handler
     .all('*', (handler: any) => {
         const { set, info } = handler;
-        logger.warn('404 Not Found', info);
         set.status = 404;
+        handler.info = {
+            ...info,
+            status: set.status,
+        };
+        logger.warn('404 Not Found', handler.info);
         return {
             success: false,
             message: 'Route not found',
@@ -57,12 +61,14 @@ export const app = new Elysia()
         const { error, set, info } = handler;
         const message = error instanceof Error ? error.message : 'Internal server error';
         const stack = error instanceof Error ? error.stack : undefined;
-        logger.error('Global error', {
+        set.status = 500;
+        handler.info = {
+            ...info,
             message,
             stack,
-            ...info,
-        });
-        set.status = 500;
+            status: set.status,
+        };
+        logger.error('Global error', handler.info);
         return {
             success: false,
             message: 'Internal server error',
