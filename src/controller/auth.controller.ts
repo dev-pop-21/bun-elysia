@@ -1,6 +1,6 @@
 import { Elysia, t } from 'elysia';
-import { AuthService } from '../service/auth.service';
-import type { LoginRequest, RegisterRequest } from '../types/auth.types';
+import { AuthService } from '@service/auth.service';
+import type { LoginRequest, RegisterRequest } from '@type/auth.types';
 
 export const authController = new Elysia()
     .post(

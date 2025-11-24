@@ -1,8 +1,8 @@
 import { sign, verify } from 'jsonwebtoken';
 import type { LoginRequest, RegisterRequest, AuthResponse } from '@type/auth.types';
 import type { User } from '@type/user.types';
-import { UserService } from './user.service';
 import { UserModel, type UserDocument } from '@model/user.mongoose';
+import { UserService } from './user.service';
 
 export class AuthService {
     private static readonly JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
