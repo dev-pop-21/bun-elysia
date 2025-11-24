@@ -1,4 +1,4 @@
-import { LOG_CONFIG, SYSLOG_CONFIG } from '../utils/constants';
+import { LOG_CONFIG, SYSLOG_CONFIG } from '@util/constants';
 
 export const logConfig = {
     maxFiles: LOG_CONFIG.MAX_FILES, // Keep logs for configurable days

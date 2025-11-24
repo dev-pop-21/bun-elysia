@@ -1,9 +1,12 @@
 import { Elysia } from 'elysia';
-import { corsPlugin, swaggerPlugin, loggerPlugin, logger, generalRateLimit } from './plugins';
-import { apiRoutes } from './routes';
-import { appConfig } from './config';
-import { DatabaseService } from './services';
-import { RATE_LIMIT_CONFIG } from './utils/constants';
+import { corsPlugin } from '@plugin/cors.plugin';
+import { swaggerPlugin } from '@plugin/swagger.plugin';
+import { loggerPlugin, logger } from '@plugin/logger.plugin';
+import { generalRateLimit } from '@plugin/rate-limit.plugin';
+import { apiRoutes } from '@route/api.routes';
+import { appConfig } from '@config/app';
+import { DatabaseService } from '@service/database.service';
+import { RATE_LIMIT_CONFIG } from '@util/constants';
 
 export const app = new Elysia()
     // Global middlewares

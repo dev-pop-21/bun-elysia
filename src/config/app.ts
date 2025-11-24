@@ -1,5 +1,5 @@
-import { APP_CONFIG } from '../utils/constants';
-import { name, description, version } from '../../package.json';
+import { APP_CONFIG } from '@util/constants';
+import { name, description, version } from '@app/package.json';
 
 export const appConfig = {
     port: APP_CONFIG.PORT,

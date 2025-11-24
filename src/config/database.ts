@@ -1,4 +1,4 @@
-import { DATABASE_CONFIG } from '../utils/constants';
+import { DATABASE_CONFIG } from '@util/constants';
 
 export const databaseConfig = {
     url: DATABASE_CONFIG.URL,
