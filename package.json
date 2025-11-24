@@ -26,22 +26,22 @@
         "@elysiajs/cors": "latest",
         "@elysiajs/swagger": "latest",
         "elysia": "latest",
-        "elysia-rate-limit": "^4.4.0",
+        "elysia-rate-limit": "^4.4.2",
         "jsonwebtoken": "^9.0.2",
-        "mongoose": "^8.17.2",
-        "winston": "^3.17.0",
+        "mongoose": "^8.20.1",
+        "winston": "^3.18.3",
         "winston-daily-rotate-file": "^5.0.0",
         "winston-syslog": "^2.7.1"
     },
     "devDependencies": {
         "@types/bun": "latest",
-        "@types/jsonwebtoken": "^9.0.5",
+        "@types/jsonwebtoken": "^9.0.10",
         "@types/mongoose": "^5.11.97",
         "@types/winston": "^2.4.4",
         "prettier": "^3.6.2"
     },
     "peerDependencies": {
-        "typescript": "^5"
+        "typescript": "^5.9.3"
     },
     "engines": {
         "bun": ">=1.0.0",
