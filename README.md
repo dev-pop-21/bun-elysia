@@ -59,15 +59,15 @@ A modern, high-performance REST API built with **Bun** and **Elysia** framework.
 ```
 bun-elysia/
 ├── src/
-│   ├── controllers/          # Request handlers
-│   ├── middlewares/          # Custom middlewares
-│   ├── routes/              # API routes
-│   ├── models/              # Data models
-│   ├── services/            # Business logic
-│   ├── utils/               # Utility functions
-│   ├── types/               # TypeScript types
+│   ├── controller/          # Request handlers
+│   ├── middleware/          # Custom middlewares
+│   ├── route/              # API routes
+│   ├── model/              # Data models
+│   ├── service/            # Business logic
+│   ├── util/               # Utility functions
+│   ├── type/               # TypeScript types
 │   ├── config/              # Configuration files
-│   ├── plugins/             # Elysia plugins
+│   ├── plugin/             # Elysia plugins
 │   └── app.ts               # Main application
 ├── tests/                   # Test files
 ├── docs/                    # Documentation
