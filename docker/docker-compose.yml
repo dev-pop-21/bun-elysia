@@ -1,6 +1,6 @@
 services:
     mongo:
-        image: mongo
+        image: mongo:latest
         pull_policy: always
         restart: always
         environment:
