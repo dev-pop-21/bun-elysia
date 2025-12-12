@@ -1,23 +1,24 @@
 import { Elysia } from 'elysia';
 import { AuthService } from '@service/auth.service';
 
-export const authMiddleware = (app: Elysia) => app.derive(({ headers, set }) => {
-    const authorization = headers.authorization;
+export const authMiddleware = (app: Elysia) =>
+    app.derive(({ headers, set }) => {
+        const authorization = headers.authorization;
 
-    if (!authorization || !authorization.startsWith('Bearer ')) {
-        set.status = 401;
-        throw new Error('Authorization header missing or invalid');
-    }
+        if (!authorization || !authorization.startsWith('Bearer ')) {
+            set.status = 401;
+            throw new Error('Authorization header missing or invalid');
+        }
 
-    const token = authorization.slice(7); // Remove 'Bearer ' prefix
+        const token = authorization.slice(7); // Remove 'Bearer ' prefix
 
-    try {
-        const payload = AuthService.verifyToken(token);
-        return {
-            user: payload,
-        };
-    } catch (error) {
-        set.status = 401;
-        throw new Error('Invalid or expired token');
-    }
-});
+        try {
+            const payload = AuthService.verifyToken(token);
+            return {
+                user: payload,
+            };
+        } catch (error) {
+            set.status = 401;
+            throw new Error('Invalid or expired token');
+        }
+    });
